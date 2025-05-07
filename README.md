@@ -6,13 +6,13 @@ A repository with a step-by-step guide on how to set up a V-Server (Ubuntu-based
 ## Table of Contents
 
 - [1. Prerequisites](#prerequisites)
-- [2. Clone this repository](#clone-repo)
+- [2. Clone this repository](#clone-this-repository)
 - [3. Generate SSH Keys](#generate-ssh-keys)
-- [4. Copy SSH Key ID to your server and login](#copy_ssh_key_id)
-- [5. V-Server setup](v-server-setup.md)
-- [6. Install NGINX](nginx-install)
-- [7. Git Configuration](git-conf)
-- [8. Additional Resources](#additional-resources)
+- [4. Copy SSH Key ID to your server and login](#copy-ssh-key-id-to-your-server-and-login)
+- [5. Server setup](#server-setup)
+- [6. Install NGINX](#install-nginx)
+- [7. Git Configuration](#git-configuration)
+- [8. Project Checklist](#project-checklist)
 
 ## Prerequisites
 
@@ -63,7 +63,7 @@ ssh -i ~/.ssh/name_of_your_key25519 your_server_username@ip_server_address
 
 Once logged in, check for the authorized `ssh keys` with `ls -al ~/.ssh/authorized_keys`. You should see your `ssh key` in there.
 
-# V-Server setup
+## Server setup
 
 Deactivate the usage of password when logging in to the server. You have to change a line in the `/etc/ssh/sshd_config` file.
 
@@ -137,7 +137,7 @@ server {
 
 Restart the NGINX service and navigate to `http://your_v_server_ip:8081`. You should be able to see your custom site in the web browser.
 
-# Git Configuration
+## Git Configuration
 
 Install Git on your server to interact with repositories (clone, pull, push, etc.).
 
@@ -186,3 +186,6 @@ Try cloning one of your repos:
 ```
 git clone git@github.com:your-username/your-repo.git
 ```
+## Project Checklist
+
+- 📄 [Checklist (PDF)](docs/checklist.pdf)

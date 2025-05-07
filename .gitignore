@@ -1,0 +1,25 @@
+# macOS system files
+.DS_Store
+
+# Editor/IDE files
+*.swp
+*.swo
+*.bak
+*.tmp
+*~
+
+# VSCode settings (optional)
+.vscode/
+
+# PDF or other generated files (optional, if you want to ignore all PDFs)
+# *.pdf
+
+# Node/npm (if you ever add JS tooling)
+node_modules/
+
+# Python cache (if you ever use Python scripts)
+__pycache__/
+*.pyc
+
+# Logs
+*.log
