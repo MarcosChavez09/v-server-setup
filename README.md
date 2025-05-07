@@ -1,14 +1,14 @@
 # V-Server setup
 
-## Description.
-A repository with a step by step guide on how to set up a V-Server (Ubuntu based server) that walks you through, SSH Keys creation, disabling password authentication, installing NGINX web server and a custom HTML page, generating SSH Keys from the V-server to connect to Github.
+## Description
+A repository with a step-by-step guide on how to set up a V-Server (Ubuntu-based server) that walks you through SSH key creation, disabling password authentication, installing the NGINX web server and a custom HTML page, and generating SSH keys from the V-Server to connect to GitHub.
 
 ## Table of Contents
 
 - [1. Prerequisites](#prerequisites)
 - [2. Clone this repository](#clone-repo)
 - [3. Generate SSH Keys](#generate-ssh-keys)
-- [4. Copy SSH Key Id to your server and login](#copy_ssh_key_id)
+- [4. Copy SSH Key ID to your server and login](#copy_ssh_key_id)
 - [5. V-Server setup](v-server-setup.md)
 - [6. Install NGINX](nginx-install)
 - [7. Git Configuration](git-conf)
@@ -16,38 +16,38 @@ A repository with a step by step guide on how to set up a V-Server (Ubuntu based
 
 ## Prerequisites
 
-Before setting up the server, make sure you have access to a v-server and you have the correpondent `ip_address`, `user_name` and `password` to login into.
+Before setting up the server, make sure you have access to a V-Server and you have the corresponding `ip_address`, `user_name`, and `password` to log in.
 
-- A V-Ubuntu server Ubuntu 20.04, 22.04 or 22.04.5 LTS
+- A Ubuntu server (Ubuntu 20.04, 22.04, or 22.04.5 LTS)
 - A user with `sudo` rights
-- Github account to connect via ssh keys
-- linux command line knowledge
+- GitHub account to connect via SSH keys
+- Linux command line knowledge
 
 ## Clone this repository
 
-Clone this repository to your local machine and follow the README.md instruction along. 
+Clone this repository to your local machine and follow the README.md instructions along.
 
-Note: If you already have SSH Keys added to Github you can clone this repository using the ssh option. If you don't have a SSH Key yet, then just use the https://url_to_repo option. Link provided below.
+Note: If you already have SSH keys added to GitHub, you can clone this repository using the SSH option. If you don't have an SSH key yet, then just use the https://url_to_repo option. Link provided below.
 
 [link to repository](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
 
 ## Generate SSH Keys
 
-if you haven´t created a SSH Key, type the following command in your terminal and give a name to it, that way you can easly know what is used for:
+If you haven't created an SSH key, type the following command in your terminal and give a name to it, so you can easily know what it is used for:
 
 ```
 ssh-keygen -t ed25519 -C "your@email.com" -f ~/.ssh/name_of_your_key25519
 ```
 
-When prompted for a passphrase, you can set one (for extra security) or press Enter for none. I suggest you give a passphrase.
+When prompted for a passphrase, you can set one (for extra security) or press Enter for none. I suggest you use a passphrase.
 
-This creates: 
+This creates:
 - Private key: `~/.ssh/name_of_your_key25519`
 - Public key: `~/.ssh/name_of_your_key25519.pub`
 
-## Copy SSH Key id to your server and login
+## Copy SSH Key ID to your server and login
 
-When created, copy your SSH Key Id and add it to the server using this command:
+When created, copy your SSH key ID and add it to the server using this command:
 
 ```
 ssh-copy-id -i ~/.ssh/name_of_your_key25519.pub your_server_user_name@ip_server_address
@@ -55,59 +55,59 @@ ssh-copy-id -i ~/.ssh/name_of_your_key25519.pub your_server_user_name@ip_server_
 - Replace `your_server_username` with the username you were given for the server.
 - Enter your `password` when prompted (already provided to you, if not, ask your admin for it).
 
-Test loggin with your key:
+Test logging in with your key:
 ```
-  ssh -i ~/.ssh/name_of_your_key25519 your_server_username@ip_server_address
+ssh -i ~/.ssh/name_of_your_key25519 your_server_username@ip_server_address
 ```
 - You should be able to log in without entering your password.
 
-Once logged in, check for the authorized `ssh keys` in `ls -al ~/.ssh/authorized_keys` you should see your `ssh key` in there.
+Once logged in, check for the authorized `ssh keys` with `ls -al ~/.ssh/authorized_keys`. You should see your `ssh key` in there.
 
 # V-Server setup
 
-Deactivate the usage of password when loggin to the server. You have to change a line in the `ect/ssh/sshd_config` file.
+Deactivate the usage of password when logging in to the server. You have to change a line in the `/etc/ssh/sshd_config` file.
 
-Use admin rights (sudo) to perform this action
+Use admin rights (sudo) to perform this action:
 ```
 sudo nano /etc/ssh/sshd_config
 ```
-Find the line `#PasswordAuthentication yes`, remove the `#` and change the value to `no`: 
+Find the line `#PasswordAuthentication yes`, remove the `#` and change the value to `no`:
 
 ```
 #PasswordAuthentication yes -> PasswordAuthentication no
 ```
 - Save and exit (`Ctrl+O`, `Enter`, `Ctrl+X` in nano) and restart the `ssh service` with:
 ```
- sudo systemctl restart ssh.service
+sudo systemctl restart ssh.service
 ```
-Verify the deactivation of password required. Logout from the server and login again but with: 
+Verify the deactivation of password requirement. Logout from the server and login again with:
 
 ```
-ssh -i ~/.ssh/name_of_your_key25519 your_user_name@ip_server_addres 
+ssh -i ~/.ssh/name_of_your_key25519 your_user_name@ip_server_address
 ```
 
-You should be able to login without a `password`.
+You should be able to login without a password.
 
 Test the login with password by using the following command:
 
 ```
-ssh -o PubkeyAuthentication=no your_user_name@ip_server_addres
+ssh -o PubkeyAuthentication=no your_user_name@ip_server_address
 ```
-I should not be possible to to login with `user password`.
+It should not be possible to login with the user password.
 
 ## Install NGINX
 
-Install the nginx server in your `v-server` with:
+Install the NGINX server on your V-Server with:
 ```
 sudo apt update
 sudo apt install nginx -y
 ```
-After the installation, verify the nginx service status.
+After the installation, verify the NGINX service status:
 
 ```
 systemctl status nginx.service
 ```
-Now, create the directory `/alternatives` in the `/var/www/alternatives` and inside this new folder, create the file `alternate-index.html`
+Now, create the directory `/alternatives` in `/var/www/alternatives` and inside this new folder, create the file `alternate-index.html`:
 ```
 sudo mkdir /var/www/alternatives
 sudo nano /var/www/alternatives/alternate-index.html
@@ -135,9 +135,9 @@ server {
 ```
 - Save and exit (`Ctrl+O`, `Enter`, `Ctrl+X` in nano).
 
-Restart nginx service and navigate to `http://your_v_server_ip:8081`. You shoulb be able to see your custom site on the web browser.
+Restart the NGINX service and navigate to `http://your_v_server_ip:8081`. You should be able to see your custom site in the web browser.
 
-#  Git Configuration
+# Git Configuration
 
 Install Git on your server to interact with repositories (clone, pull, push, etc.).
 
@@ -146,43 +146,43 @@ sudo apt update
 sudo apt install git -y
 ```
 
-After that, configure git `user` and `email` on the V-Server. Git uses your name and email to record who makes each commit. This should match your GitHub identity for consistency and proper attribution.
+After that, configure Git `user` and `email` on the V-Server. Git uses your name and email to record who makes each commit. This should match your GitHub identity for consistency and proper attribution.
 ```
 git config --global user.name "Your Name"
 git config --global user.email "your@email.com"
 ```
 
-Now, we need to generate a new SSH Key pair on the V-Server, This key will be used by the server to authenticate with GitHub, allowing you to clone, pull, and push repositories from the server.
-Note: Give a meaningfull name to this new key.
+Now, we need to generate a new SSH key pair on the V-Server. This key will be used by the server to authenticate with GitHub, allowing you to clone, pull, and push repositories from the server.
+Note: Give a meaningful name to this new key.
 ```
-ssh-keygen -t ed25519 -C "your@email.com" -f ~/.ssh/meaningfull_name25519
+ssh-keygen -t ed25519 -C "your@email.com" -f ~/.ssh/meaningful_name25519
 ```
 - When prompted for a passphrase, you can set one (for extra security) or press Enter for none.
 This creates:
-- Private key: ~/.ssh/meaningfull_name25519
-- Public key: ~/.ssh/meaningfull_name25519.pub
+- Private key: ~/.ssh/meaningful_name25519
+- Public key: ~/.ssh/meaningful_name25519.pub
 
-Add the SSH Key to the agent.
+Add the SSH key to the agent:
 ```
 eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/meaningfull_name25519
+ssh-add ~/.ssh/meaningful_name25519
 ```
-Then, add the pub key to GitHub.
+Then, add the public key to GitHub:
 
 ```
-  cat ~/.ssh/vserver25519.pub
+cat ~/.ssh/meaningful_name25519.pub
 ```
 - Copy the output.
 - Go to GitHub SSH keys settings.
 - Click New SSH key.
-- Title it something like “V-Server meaningfull_name25519”.
+- Title it something like "V-Server meaningful_name25519".
 - Paste the key and save.
 
-Test the connection.
+Test the connection:
 ```
-  ssh -T git@github.com
+ssh -T git@github.com
 ```
-try cloning one of your repos:
+Try cloning one of your repos:
 ```
-  git clone git@github.com:your-username/your-repo.git
+git clone git@github.com:your-username/your-repo.git
 ```
