@@ -63,7 +63,7 @@ ssh-copy-id -i ~/.ssh/<name_of_your_key25519.pub> <your_server_user_name>@<ip_se
 
 Test logging in with your key:
 ```
-ssh -i ~/.ssh/<name_of_your_key25519> >your_server_username>@>ip_server_address>
+ssh -i ~/.ssh/<name_of_your_key25519> <your_server_username>@<ip_server_address>
 ```
 - You should be able to log in without entering your password.
 
